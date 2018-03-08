@@ -1,3 +1,29 @@
+;;; bolt-mode.el --- Editing support for Bolt language  -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2018  Mikhail Pontus
+
+;; Author: Mikhail Pontus <m.pontus@gmail.com>
+;; Keywords: languages
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; Provides major mode for Bolt files with syntax highlighting and indentation support.
+
+;;; Code:
+
 (defconst bolt-mode-identifier-re "[a-zA-Z_$][a-zA-Z0-9]+")
 
 (defvar bolt-highlights
@@ -9,12 +35,12 @@
       (,(concat "\\<\\(" bolt-mode-identifier-re "\\)(") . (1 font-lock-function-name-face)))))
 
 (defun bolt-mode-previous-nonblank-line ()
-  "Move cursor to previous non-blank line"
+  "Move cursor to previous non-blank line."
   (goto-char (line-beginning-position))
   (skip-chars-backward "\r\n\s\t"))
 
 (defun bolt-mode-find-unclosed-pair ()
-  "Return non-nil value if current line contains unclosed pairs."
+  "Return non-nil value if unclosed pairs found on current line."
   (goto-char (line-beginning-position))
   (let (unclosed-pairs)
     (while (not (or (looking-at "\n")
@@ -32,7 +58,8 @@
     unclosed-pairs))
 
 (defun bolt-mode-indent-line ()
-  (let (base should-indent)
+  "Indent current line."
+  (let (base-indent should-indent)
     (save-excursion
       (bolt-mode-previous-nonblank-line)
       (setq base-indent (current-indentation))
@@ -45,7 +72,7 @@
 	      (skip-syntax-forward " " (line-end-position))
 	      (eq (char-syntax (following-char)) ?\)))
 	    (- base-indent tab-width))
-	   (t base-indent))))))
+	   (t base-indent)))))
 
 ;;;###autoload
 (define-derived-mode bolt-mode fundamental-mode "Bolt"
@@ -53,4 +80,9 @@
   (setq font-lock-defaults '(bolt-highlights))
   (setq indent-line-function #'bolt-mode-indent-line))
 
+;;;###autoload
+(add-to-list 'auto-mode-alist
+             '("/\\.bolt\\'" . bolt-mode))
+
 (provide 'bolt-mode)
+;;; bolt-mode.el ends here
