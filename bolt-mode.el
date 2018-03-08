@@ -2,10 +2,11 @@
 
 ;; Copyright (C) 2018  Mikhail Pontus
 
-;; Author: Mikhail Pontus <m.pontus@gmail.com>
-;; Keywords: languages
+;; Author: Mikhail Pontus <mpontus@gmail.com>
 ;; URL: https://github.com/mpontus/bolt-mode
 ;; Version: 0.1
+;; Keywords: languages
+;; Package-Requires: ((emacs "24.3"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
