@@ -68,14 +68,15 @@
       (setq base-indent (current-indentation))
       (setq should-indent (bolt-mode-find-unclosed-pair)))
     (indent-line-to
-     (cond (should-indent (+ base-indent tab-width))
-	   ;; Dedent when current line starts with a closing pair
-	   ((save-excursion
-	      (goto-char (line-beginning-position))
-	      (skip-syntax-forward " " (line-end-position))
-	      (eq (char-syntax (following-char)) ?\)))
-	    (- base-indent tab-width))
-	   (t base-indent)))))
+     (if (save-excursion
+	   (goto-char (line-beginning-position))
+	   (skip-syntax-forward " " (line-end-position))
+	   (eq (char-syntax (following-char)) ?\)))
+	 ;; Dedent when current line starts with a closing pair
+	 (if should-indent base-indent (- base-indent tab-width))
+       (if should-indent
+	   (+ base-indent tab-width)
+	 base-indent)))))
 
 ;;;###autoload
 (define-derived-mode bolt-mode fundamental-mode "Bolt"
