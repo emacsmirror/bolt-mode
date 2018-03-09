@@ -85,7 +85,7 @@
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist
-             '("/\\.bolt\\'" . bolt-mode))
+             '("\\.bolt\\'" . bolt-mode))
 
 (provide 'bolt-mode)
 ;;; bolt-mode.el ends here
