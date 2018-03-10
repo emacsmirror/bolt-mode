@@ -37,6 +37,15 @@
       ;; function calls
       (,(concat "\\<\\(" bolt-mode-identifier-re "\\)(") . (1 font-lock-function-name-face)))))
 
+(defvar bolt-mode-syntax-table
+  (let ((table (copy-syntax-table
+		(standard-syntax-table))))
+    (modify-syntax-entry ?/ ". 124" table)
+    (modify-syntax-entry ?* ". 23b" table)
+    (modify-syntax-entry ?\r "> " table)
+    (modify-syntax-entry ?\n "> " table)
+    table))
+
 (defun bolt-mode-previous-nonblank-line ()
   "Move cursor to previous non-blank line."
   (goto-char (line-beginning-position))
@@ -81,6 +90,9 @@
 ;;;###autoload
 (define-derived-mode bolt-mode fundamental-mode "Bolt"
   "Major mode for editing Bolt files"
+  (set-syntax-table bolt-mode-syntax-table)
+  (setq-local comment-start "//")
+  (setq-local comment-use-syntax t)
   (setq font-lock-defaults '(bolt-mode-highlights))
   (setq indent-line-function #'bolt-mode-indent-line))
 
