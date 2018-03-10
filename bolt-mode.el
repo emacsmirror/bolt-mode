@@ -34,7 +34,7 @@
 	(types '("String" "Number" "Boolean" "Object" "Any" "Null" "Map")))
     `((,(regexp-opt keywords 'words) . font-lock-keyword-face)
       (,(regexp-opt types 'words) . font-lock-type-face)
-      // function calls
+      ;; function calls
       (,(concat "\\<\\(" bolt-mode-identifier-re "\\)(") . (1 font-lock-function-name-face)))))
 
 (defun bolt-mode-previous-nonblank-line ()
